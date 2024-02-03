@@ -1,10 +1,5 @@
-import yfinance as yf
-import matplotlib.pyplot as plt
-import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_squared_error
-import numpy as np
+from modules.plot_data import plot_data
+from modules.predict_future_price import predict_future_price
 
 popular_ticker_symbols = {
     "AAPL": "Apple Inc.",
@@ -32,61 +27,48 @@ print('''
 ''')                                                                                                            
                                                                                                             
 
-# Define the ticker symbol
+# Display the list of popular ticker symbols to the user.
 print('Popular Ticker Symbols:\n')
 for symbol, company in popular_ticker_symbols.items():
+    # Iterate through the dictionary of ticker symbols and print each one with its corresponding company name.
     print(f"{symbol} - {company}")
 
+# Prompt to guide users where they can find more ticker symbols.
 print('\nFind more ticker symbols at https://stockanalysis.com/stocks/\n')
 
-# User inputs
+# Request user input for the ticker symbol they're interested in.
 ticker_symbol = input('Enter the ticker symbol: ')
+
+# Request user input for the period in years for which they want the data, with a constraint between 1 and 20 years.
 period = input('How far back do you want data from, choose a period in years from 1 to 20: ')
-x_days = int(input("Enter the number of days into the future for the prediction: "))
 
-# Fetch historical stock data
-ticker = yf.Ticker(ticker_symbol)
-ticker_data = ticker.history(period=f'{period}y')
+# Validate the period input to ensure it's a digit, and within the allowed range (1 to 20 years).
+if (period.isdigit() == False) or (int(period) < 1) or (int(period) > 20):
+    # If the input is invalid, notify the user and terminate the program.
+    print('Invalid period')
+    exit()
 
-# Preparing the data
-ticker_data['Target'] = ticker_data['Close'].shift(-x_days)
-ticker_data = ticker_data.dropna()  # Dropping NA values to avoid issues in model training
+# Present the user with options for the functionality they wish to use.
+print('1. Predict the future stock price')
+print('2. Plot the historical stock data')
 
-# Features and Labels
-X = ticker_data[['Close']]
-y = ticker_data['Target']
+# Capture the user's choice.
+option = input('Choose an option: ')
 
-# Split the data
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# Based on the user's choice, either predict future stock prices or plot historical data.
+if option == '1':
+    # If option 1, request the number of days into the future for which the prediction is desired.
+    x_days = int(input('Enter the number of days into the future for the prediction: '))
+    # Call the function to predict future price based on the inputs.
+    predict_future_price(ticker_symbol, x_days, period)
+elif option == '2':
+    # If option 2, call the function to plot historical data based on the ticker symbol and period.
+    plot_data(ticker_symbol, period)
+else:
+    # If the user enters an invalid option, notify them.
+    print('Invalid option')
 
-# Linear Regression Model
-model = LinearRegression()
-model.fit(X_train, y_train)
 
-# Making predictions
-predictions = model.predict(X_test)
 
-# MSE
-mse = mean_squared_error(y_test, predictions)
-print(f"Mean Squared Error: {mse}")
 
-# Predicting the future price based on the latest price
-latest_price = np.array([[ticker_data['Close'].iloc[-1]]])  # Ensure latest_price is 2D
 
-# Predicting a single future price
-future_price = model.predict(latest_price)
-
-print(f"Predicted stock price for {ticker_symbol} {x_days} days into the future: {future_price[0]:.2f}")
-
-def plot_data():
-    plt.figure(figsize=(14, 7))
-    plt.plot(ticker_data.index, ticker_data['Average'], label='Daily Average Price', linewidth=1)
-
-    plt.title(f'Daily Average Price of {ticker.info["longName"]} Stock Over the Last 10 Years')
-    plt.xlabel('Date')
-    plt.ylabel('Average Price (USD)')
-    plt.legend()
-    plt.grid(True)
-    plt.tight_layout()
-
-    plt.show()
