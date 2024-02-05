@@ -45,6 +45,5 @@ Quant Market Predictor is released under the MIT License. See the [LICENSE](LICE
 The predictions made by this tool are for informational purposes only and should not be considered financial advice. Always conduct your own research and consult with a financial advisor before making investment decisions.
 
 ## Acknowledgments
-
 - Data provided by [Yahoo Finance](https://finance.yahoo.com/).
 - Thanks to all the contributors who have helped with the development of this project.
