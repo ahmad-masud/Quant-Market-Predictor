@@ -1,5 +1,10 @@
 import unittest
-from ..modules import predict_future_price
+import sys
+from pathlib import Path
+
+sys.path.append(str(Path(__file__).parent.parent))
+
+from modules import predict_future_price
 
 class test_predict_future_price(unittest.TestCase):
     def test_predict_future_price(self):
