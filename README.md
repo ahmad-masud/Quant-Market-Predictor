@@ -1,6 +1,6 @@
 # Quant Market Predictor
-<img width="1470" alt="Screenshot 2024-02-03 at 3 59 35 PM" src="https://github.com/ahmad-masud/Quant-Market-Predictor/assets/96448477/6abe3ec4-06d1-444a-832a-dab9d0a393b0">
-<img width="1046" alt="Screenshot 2024-02-03 at 4 00 11 PM" src="https://github.com/ahmad-masud/Quant-Market-Predictor/assets/96448477/f6a9d959-7c66-44b5-ae2a-83737740a477">
+![Graph](images/graph.png)
+![Console](images/console.png)
 
 
 ## Overview
