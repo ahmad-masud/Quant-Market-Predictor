@@ -84,7 +84,8 @@ while (True):
             # If the user enters an invalid option, notify them.
             print('Invalid option')
 
-
+if __name__ == "__main__":
+    main()  # Run the main function if the script is executed directly
 
 
 
