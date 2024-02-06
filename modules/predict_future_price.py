@@ -5,7 +5,15 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
 import numpy as np
 
-def predict_future_price(ticker_symbol, x_days, period):
+def predict_future_price(ticker_symbol, x_days, period) -> float:
+    """
+    Predicts the future stock price for a given stock based on its ticker symbol and the number of days into the future.
+    
+    :param ticker_symbol: The stock's ticker symbol as a string.
+    :param x_days: The number of days into the future for the prediction as an integer.
+    :param period: The period over which to calculate the risk score ('1mo', '3mo', '6mo', '1y', '2y', etc.).
+    :return: The predicted future stock price as a float.
+    """
     # Fetch historical stock data
     ticker = yf.Ticker(ticker_symbol)
     ticker_data = ticker.history(period=f'{period}y')

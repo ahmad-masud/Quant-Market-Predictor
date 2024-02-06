@@ -8,6 +8,7 @@ Quant Market Predictor is a Python-based tool designed to forecast future stock 
 
 ## Features
 - **Stock Price Prediction**: Predict future stock prices based on historical data.
+- **Stock Risk Volatility**: Measure how risky it is to purchase a stock.
 - **Data Visualization**: Plot historical stock price data for analysis.
 
 ## Installation
