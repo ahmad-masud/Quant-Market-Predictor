@@ -1,5 +1,5 @@
 import unittest
-from predict_future_price import predict_future_price
+from ..modules import predict_future_price
 
 class test_predict_future_price(unittest.TestCase):
     def test_predict_future_price(self):

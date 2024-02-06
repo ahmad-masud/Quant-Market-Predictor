@@ -1,5 +1,5 @@
 import unittest
-from risk_score import risk_score
+from ..modules import risk_score
 
 class test_risk_score(unittest.TestCase):
     def test_risk_score(self):

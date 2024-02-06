@@ -1,5 +1,5 @@
 import unittest
-from plot_data import plot_data
+from ..modules import plot_data
 
 class test_plot_data(unittest.TestCase):
     def test_plot_data(self):
