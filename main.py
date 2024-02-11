@@ -39,7 +39,7 @@ print('\nFind more ticker symbols at https://stockanalysis.com/stocks/\n')
 while (True):
     # Request user input for the ticker symbol they're interested in.
     ticker_symbol = input('Enter the ticker symbol: ')
-    if yf.Ticker(ticker_symbol).history(period='20y').empty: # Check if the ticker symbol is valid
+    if yf.Ticker(ticker_symbol).history(period='20y').empty: # Check if the ticker symbol is invalid
         continue
 
     # Request user input for the period in years for which they want the data, with a constraint between 1 and 20 years.
