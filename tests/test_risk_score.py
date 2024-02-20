@@ -4,7 +4,7 @@ from pathlib import Path
 
 sys.path.append(str(Path(__file__).parent.parent))
 
-from modules import risk_score
+from scripts import risk_score
 
 class test_risk_score(unittest.TestCase):
     def test_risk_score(self):

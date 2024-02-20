@@ -1,6 +1,5 @@
 import yfinance as yf
 import matplotlib.pyplot as plt
-import pandas as pd
 
 def plot_data(ticker_symbol, period) -> bool:
     """

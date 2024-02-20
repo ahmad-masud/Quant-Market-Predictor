@@ -4,7 +4,7 @@ from pathlib import Path
 
 sys.path.append(str(Path(__file__).parent.parent))
 
-from modules import plot_data
+from scripts import plot_data
 
 class test_plot_data(unittest.TestCase):
     def test_plot_data(self):

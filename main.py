@@ -1,5 +1,5 @@
 import yfinance as yf
-from modules import predict_future_price, risk_score, plot_data
+from scripts import predict_future_price, risk_score, plot_data
 
 popular_ticker_symbols = {
     "AAPL": "Apple Inc.",
