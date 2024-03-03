@@ -45,4 +45,3 @@ The predictions made by this tool are for informational purposes only and should
 
 ## Acknowledgments
 - Data provided by [Yahoo Finance](https://finance.yahoo.com/).
-- Thanks to all the contributors who have helped with the development of this project.
