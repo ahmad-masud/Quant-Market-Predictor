@@ -1,12 +1,17 @@
+import streamlit as st
 import yfinance as yf
 from scripts import predict_future_price, risk_score, plot_data
 
-popular_ticker_symbols = {
+# Set the app title
+st.title("Quant Market Predictor")
+
+# Predefined list of popular ticker symbols
+popular_tickers = {
     "AAPL": "Apple Inc.",
     "MSFT": "Microsoft Corporation",
     "AMZN": "Amazon.com Inc.",
     "GOOGL": "Alphabet Inc. (Google)",
-    "FB": "Meta Platforms, Inc. (formerly Facebook, Inc.)",
+    "FB": "Meta Platforms, Inc.",
     "BRK.A": "Berkshire Hathaway Inc.",
     "JNJ": "Johnson & Johnson",
     "V": "Visa Inc.",
@@ -14,82 +19,51 @@ popular_ticker_symbols = {
     "TSLA": "Tesla, Inc.",
 }
 
-print(
-    r"""
-  /$$$$$$  /$$      /$$ /$$$$$$$ 
- /$$__  $$| $$$    /$$$| $$__  $$
-| $$  \ $$| $$$$  /$$$$| $$  \ $$
-| $$  | $$| $$ $$/$$ $$| $$$$$$$/
-| $$  | $$| $$  $$$| $$| $$____/ 
-| $$/$$ $$| $$\  $ | $$| $$      
-|  $$$$$$/| $$ \/  | $$| $$      
- \____ $$$|__/     |__/|__/      
-      \__/                       
-"""
-)
+# Create a dropdown to select ticker
+ticker_symbol = st.selectbox("Select a stock ticker:", list(popular_tickers.keys()))
+custom_ticker = st.text_input("Or enter a custom ticker symbol:")
 
+# Use custom input if provided
+ticker_symbol = custom_ticker.upper() if custom_ticker else ticker_symbol
 
-# Display the list of popular ticker symbols to the user.
-print("Popular Ticker Symbols:\n")
-for symbol, company in popular_ticker_symbols.items():
-    # Iterate through the dictionary of ticker symbols and print each one with its corresponding company name.
-    print(f"{symbol} - {company}")
+# Select period for historical data
+period = st.slider("Select historical period (years):", 1, 20, 5)
 
-# Prompt to guide users where they can find more ticker symbols.
-print("\nFind more ticker symbols at https://stockanalysis.com/stocks/\n")
+# Check if valid ticker
+if not yf.Ticker(ticker_symbol).history(period="20y").empty:
+    st.success(
+        f"Analyzing {ticker_symbol} ({popular_tickers.get(ticker_symbol, 'Custom Stock')})"
+    )
 
-while True:
-    # Request user input for the ticker symbol they're interested in.
-    ticker_symbol = input("Enter the ticker symbol: ").strip().upper()
-    if not ticker_symbol:
-        print("Ticker symbol cannot be empty. Please try again.")
-        continue
+    option = st.radio(
+        "Choose an analysis:",
+        ["Predict Future Price", "Measure Stock Risk", "Plot Historical Data"],
+    )
 
-    if yf.Ticker(ticker_symbol).history(period="20y").empty:
-        print(f"Invalid ticker symbol: {ticker_symbol}. Please try again.")
-        continue
-
-    # Request user input for the period in years for which they want the data, with a constraint between 1 and 20 years.
-    while True:
-        # Validate the period input to ensure it's a digit, and within the allowed range (1 to 20 years).
-        period = input("How far back do you want data from (1 to 20 years)? ")
-        if period.isdigit() and 1 <= int(period) <= 20:
-            period = int(period)
-            break
-        # If the input is invalid, notify the user and terminate the program.
-        print("Invalid input. Please enter a number between 1 and 20.")
-
-    while True:
-        # Present the user with options for the functionality they wish to use.
-        print("1. Predict the future stock price")
-        print("2. Measure Stock Risk in Volatility")
-        print("3. Plot the historical stock data")
-        print("4. Change Ticker Symbol and/or Period")
-        print("5. Exit")
-
-        # Capture the user's choice.
-        option = input("Choose an option: ")
-
-        # Based on the user's choice, either predict future stock prices or plot historical data.
-        if option == "1":
-            # If option 1, request the number of days into the future for which the prediction is desired.
-            x_days = int(
-                input("Enter the number of days into the future for the prediction: ")
+    if option == "Predict Future Price":
+        x_days = st.number_input(
+            "Enter the number of days into the future:",
+            min_value=1,
+            max_value=365,
+            value=30,
+        )
+        if st.button("Predict Price"):
+            predicted_price = predict_future_price(ticker_symbol, x_days, period)
+            st.write(
+                f"Predicted price for {ticker_symbol} in {x_days} days: **${predicted_price}**"
             )
-            # Call the function to predict future price based on the inputs.
-            predict_future_price(ticker_symbol, x_days, period)
-        elif option == "2":
-            # If option 2, call the function to measure stock risk based on the ticker symbol and period.
-            risk_score(ticker_symbol, period)
-        elif option == "3":
-            # If option 2, call the function to plot historical data based on the ticker symbol and period.
+
+    elif option == "Measure Stock Risk":
+        if st.button("Calculate Risk Score"):
+            risk_score, risk_level, color = risk_score(ticker_symbol, period)
+            st.write(f"Risk Score for {ticker_symbol}: **{risk_score}**")
+            st.write(
+                f'<span style="color: {color};">{risk_level}</span>',
+                unsafe_allow_html=True,
+            )
+
+    elif option == "Plot Historical Data":
+        if st.button("Show Chart"):
             plot_data(ticker_symbol, period)
-        elif option == "4":
-            # If option 3, break out of the current loop and prompt the user for a new ticker symbol and period.
-            break
-        elif option == "5":
-            # If option 4, terminate the program.
-            exit()
-        else:
-            # If the user enters an invalid option, notify them.
-            print("Invalid option")
+else:
+    st.error("Invalid ticker symbol. Please enter a valid stock ticker.")

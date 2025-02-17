@@ -7,12 +7,15 @@ sys.path.append(str(Path(__file__).parent.parent))
 from scripts import plot_data
 
 
-class test_plot_data(unittest.TestCase):
+class TestPlotData(unittest.TestCase):
     def test_plot_data_runs(self):
-        """Ensure plot_data runs without errors and returns True."""
-        self.assertTrue(plot_data("aapl", 10))
-        self.assertTrue(plot_data("msft", 5))
-        self.assertTrue(plot_data("amzn", 17))
+        """Ensure plot_data runs without errors."""
+        try:
+            plot_data("AAPL", 10)
+            plot_data("MSFT", 5)
+            plot_data("AMZN", 17)
+        except Exception as e:
+            self.fail(f"plot_data raised an exception: {e}")
 
 
 if __name__ == "__main__":

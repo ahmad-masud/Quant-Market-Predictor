@@ -29,7 +29,7 @@ To run the Quant Market Predictor, you'll need Python installed on your system. 
 Run the main script from the command line:
 
 ```sh
-python main.py
+python -m streamlit run main.py
 ```
 
 Follow the on-screen prompts to enter the ticker symbol, period for historical data, and select the desired functionality (e.g., predict future stock prices or plot historical data).
