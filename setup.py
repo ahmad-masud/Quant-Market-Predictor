@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='Quant-Market-Predictor',
-    version='0.1',
+    name="Quant-Market-Predictor",
+    version="0.1",
     packages=find_packages(),
     install_requires=[],
 )
