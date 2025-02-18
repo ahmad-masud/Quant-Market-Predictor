@@ -11,7 +11,7 @@ popular_tickers = {
     "MSFT": "Microsoft Corporation",
     "AMZN": "Amazon.com Inc.",
     "GOOGL": "Alphabet Inc. (Google)",
-    "FB": "Meta Platforms, Inc.",
+    "META": "Meta Platforms, Inc.",
     "BRK.A": "Berkshire Hathaway Inc.",
     "JNJ": "Johnson & Johnson",
     "V": "Visa Inc.",
